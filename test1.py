@@ -17,17 +17,17 @@ teapot_points, temp = T.generate_points(dataset_teapot)
 bunny_points, temp = T.generate_points(dataset_bunny)
 
 source = teapot_points
-destination = bunny_points
+destination = bunny_points * 10
 
 
 Morphing = AS.Assignment(source, destination)
 Morphing.calculate()
-destination_points, source_points = Morphing.get_result()
+source_points, destination_points = Morphing.get_result()
 
 
 # Test
 
-FRAME = 6000
+FRAME = 600
 filename = "test.mp4"
 
 
