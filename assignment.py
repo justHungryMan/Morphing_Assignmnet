@@ -15,7 +15,7 @@ class Assignment:
         # Source < Destination
         if len(source_matrix) > len(destination_matrix):
             self._source_matrix, self._destination_matrix = self._destination_matrix, self._source_matrix
-            self.isChange = True
+            self._isChange = True
 
         # Cost Matrix
         self._cost_matrix = np.zeros((len(self._source_matrix), len(self._destination_matrix)))
@@ -34,14 +34,30 @@ class Assignment:
                 self._cost_matrix[i][j] = math.sqrt(self._cost_matrix[i][j])
         
         # Calulate Hungarian Algorithm
+        print(self._cost_matrix.shape)
         row_ind, col_ind = linear_sum_assignment(self._cost_matrix)
 
         # Save result
-        print("source :", len(self._source))
-        print("destination:", len(self._destination))
+        
         self._source += self._source_matrix[row_ind].tolist()
         self._destination += self._destination_matrix[col_ind].tolist()
+        print("source :", len(self._source))
+        print("destination:", len(self._destination))
 
+        if len(self._source_matrix) < len(self._destination_matrix):
+            new_destination_matrix = []
+            exclude = set(col_ind)
+            print(self._cost_matrix.shape)
+            for idx in range(self._cost_matrix.shape[1]):
+                if not idx in exclude:
+
+                    print(self._cost_matrix.T[idx])
+                    print(self._cost_matrix.T[idx].shape)
+                    self._source.append(self._source_matrix[np.argmin(self._cost_matrix.T[idx])])
+                    self._destination.append(self._destination_matrix[idx])
+
+
+        '''
         # Check if do more calculate
         print("source_matrix len :", len(self._source_matrix))
         print("destination_matrix len:", len(self._destination_matrix))
@@ -57,7 +73,7 @@ class Assignment:
 
             # Reculsive
             self.calculate()
-        
+        '''
     # Get results after calculation
     def get_result(self):
         if self._isChange is True:
